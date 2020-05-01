@@ -6,9 +6,10 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(os.path.dirname(app.root_path), 'data.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = 'jiubugaosuni'
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'jiubugaosuni')#读取系统环境变量 SECRET_KEY 的值，如果没有获取到，则使用jiubugaosuni
+app.config['SQLALCHEMY_DATABASE_URI'] = \
+    'sqlite:///'  + os.path.join(os.path.dirname(app.root_path), os.getenv('DATABASE_FILE', 'data.db'))
 
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
