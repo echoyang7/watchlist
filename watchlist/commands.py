@@ -1,7 +1,7 @@
 import click
 
 from watchlist import app, db
-from watchlist.models import User, Movie
+from watchlist.models import User, Movie,Message
 
 #执行 flask admin 命令，输入用户名和密码后，即可创建管理员账户。
 @app.cli.command()
@@ -52,6 +52,31 @@ def forge():
     for m in movies:
         movie = Movie(title=m['title'],year=m['year'])
         db.session.add(movie)
+
+    db.session.commit()
+    click.echo('Done.')
+
+
+@app.cli.command()
+@click.option('--count', default=20, help='Quantity of messages, default is 20.')
+def forge_message(count):
+    db.create_all()
+    from faker import Faker
+
+    fake = Faker()
+    messages = [
+        {'name': 'Amy', 'body': 'Wow!'},
+        {'name': 'Shelton', 'body': 'WowWow!'},
+        {'name': 'echo', 'body': 'Heihei!'},
+    ]
+
+    for m in range(count):
+        message = Message(
+            name=fake.name(),
+            body=fake.sentence(),
+            timestamp=fake.date_time_this_year()
+        )
+        db.session.add(message)
 
     db.session.commit()
     click.echo('Done.')

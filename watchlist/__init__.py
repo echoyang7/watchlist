@@ -4,6 +4,7 @@ import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_moment import Moment
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -13,6 +14,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = \
 
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
+moment = Moment(app)
 
 
 #Flask-Login 提供了一个 current_user 变量，注册这个函数的目的是，当程序运行后，如果用户已登录， current_user 变量的值会是当前用户的用户模型类记录。
@@ -31,5 +33,7 @@ def inject_user():
     from watchlist.models import User# 避免循环依赖
     user = User.query.first()
     return dict(user=user)
+
+
 #这几个模块同时也要导入构造文件中的程序实例，为了避免循环依赖（A 导入 B，B 导入 A），我们把这一行导入语句放到构造文件的结尾
 from watchlist import views, errors, commands

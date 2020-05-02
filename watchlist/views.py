@@ -2,7 +2,8 @@ from flask import render_template,request,url_for,redirect,flash
 from flask_login import login_user,login_required,logout_user,current_user
 
 from watchlist import app, db
-from watchlist.models import User, Movie
+from watchlist.models import User, Movie, Message
+from watchlist.forms import HelloForm
 
 @app.route('/', methods=['GET','POST'])
 def index():
@@ -94,3 +95,18 @@ def logout():
     logout_user()
     flash('Goodbye')
     return redirect(url_for('index'))
+
+@app.route('/sayHello',methods=['GET','POST'])
+def sayHello():
+    form = HelloForm()
+    if form.validate_on_submit():
+        name = request.form["name"]
+        body = request.form["body"]
+        message = Message(name=name,body=body)
+        db.session.add(message)
+        db.session.commit()
+        flash('Message created')
+        return redirect(url_for('sayHello'))
+
+    messages = Message.query.order_by(Message.timestamp.desc()).all()
+    return render_template('sayHello.html',form=form,messages=messages)

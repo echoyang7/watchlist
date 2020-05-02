@@ -7,9 +7,11 @@
     <title>{{ user.name }}'s Watchlist</title>
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" type="text/css">
+    {{ moment.include_moment() }}
     {% endblock %}
 </head>
 <body>
+
     {% for message in get_flashed_messages() %}
         <div class="alert">{{ message }}</div>
     {% endfor %}
@@ -26,6 +28,7 @@
             {% else %}
                 <li><a href="{{ url_for('login') }}">Login</a></li>
             {% endif %}
+            <li><a href="{{ url_for('sayHello') }}">sayHello</a></li>
         </ul>
     </nav>
     {% block content %}{% endblock %}

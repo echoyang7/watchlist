@@ -74,6 +74,7 @@ input[type=submit] {
 }
 /* 龙猫图片 */
 .totoro {
+    width: 40px;
     display: block;
     margin: 0 auto;
     height: 100px;

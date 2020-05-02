@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+ <form method="POST">
+    {{ form.hidden_tag() }}
+    {{ form.name.label }} {{ form.name() }}
+    {{ form.body.label }} {{ form.body() }}
+    {{ form.submit() }}
+</form>
+<p>{{ messages|length }} Titles</p>
+<ul class="message-list">
+    {% for message in messages %} {# 迭代 movies 变量 #}
+    <li>{{ message.name }} - {{ moment(message.timestamp).fromNow(refresh=True) }}
+    <p class="mb-1">{{ message.body }}</p></li>
+    {% endfor %} {# 使用 endfor 标签结束 for 语句 #}
+</ul>
+{% endblock %}
